@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Training — Round 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1F2937; background: #F8FAFC; line-height: 1.5; }
+header { background: #1E2761; color: white; padding: 16px 24px; }
+header h1 { margin: 0; font-size: 17px; font-weight: 600; }
+header .sub { margin-top: 4px; font-size: 12px; color: #CADCFC; }
+header a.top-link { color: #CADCFC; text-decoration: none; margin-left: 12px; font-size: 12px; border-bottom: 1px dotted #CADCFC; }
+header a.top-link:hover { color: white; border-color: white; }
+.container { max-width: 980px; margin: 0 auto; padding: 24px; }
+.card { background: white; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 12px 0; font-size: 17px; color: #1E2761; }
+.card h3 { margin: 16px 0 8px 0; font-size: 14px; color: #1E2761; }
+.card p, .card li { font-size: 14px; }
+input.text-input { padding: 10px 12px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 14px; width: 100%; max-width: 400px; }
+input.text-input:focus { outline: 2px solid #1E2761; outline-offset: -1px; }
+.btn { padding: 10px 18px; background: #1E2761; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn:hover { opacity: 0.9; }
+.btn:disabled { background: #9CA3AF; cursor: not-allowed; opacity: 1; }
+.btn-secondary { background: white; color: #1E2761; border: 1px solid #1E2761; }
+.btn-yt { background: #CC0000; color: white; border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-yt:hover { background: #A30000; }
+.pid-banner { background: #EFF6FF; border-left: 3px solid #1E2761; padding: 8px 12px; font-size: 13px; color: #1E2761; margin-bottom: 16px; border-radius: 4px; }
+.coding-tip { background: #FEF3C7; border-left: 3px solid #B45309; padding: 10px 14px; font-size: 13px; color: #92400E; border-radius: 4px; margin: 12px 0; }
+.session-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 6px; margin-bottom: 8px; background: white; }
+.session-row .name { font-weight: 500; }
+.session-row .status { font-size: 12px; color: #6B7280; }
+.session-row.complete { background: #D1FAE5; border-color: #047857; }
+.session-row.complete .status { color: #047857; font-weight: 500; }
+.session-row.locked { background: #F3F4F6; border-color: #D1D5DB; }
+.session-row.locked .status { color: #6B7280; font-style: italic; }
+.post { position: relative; border: 1px solid #E2E8F0; border-radius: 6px; padding: 14px; margin-bottom: 16px; background: white; }
+.post.coded { background: #ECFDF5; border-left: 4px solid #047857; }
+.post.coded::after { content: "¹3 coded"; position: absolute; top: 10px; right: 12px; background: #047857; color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.post.unviewable { background: #FEF3C7; border-left: 4px solid #B45309; }
+.post.unviewable::after { content: "A0 unviewable"; position: absolute; top: 10px; right: 12px; background: #B45309; color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.unviewable-controls { margin: 8px 0 0 0; display: flex; gap: 8px; align-items: center; }
+.btn-unviewable { background: #F8FAFC; color: #6B7280; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+.btn-unviewable:hover { background: #FEF3C7; color: #B45309; border-color: #B45309; }
+.unviewable-banner { display: none; padding: 12px; background: #FEF3C7; border-left: 3px solid #B45309; border-radius: 4px; margin-top: 10px; font-size: 13px; color: #92400E; }
+.unviewable-banner.show { display: block; }
+.unviewable-banner button { background: none; border: 1px solid #B45309; color: #B45309; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 8px; }
+.post-num { font-size: 12px; color: #6B7280; font-weight: 500; margin-bottom: 8px; }
+.post-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: #6B7280; margin-bottom: 4px; }
+.post-meta .duration { font-weight: 500; color: #1E2761; }
+.post-title { font-weight: 600; font-size: 15px; color: #1E2761; margin: 4px 0 6px 0; line-height: 1.35; }
+.post-desc { font-size: 12.5px; color: #374151; white-space: pre-wrap; max-height: 100px; overflow-y: auto; padding: 8px 10px; background: #F8FAFC; border-radius: 4px; margin-bottom: 4px; }
+.yt-wrap { margin-bottom: 10px; }
+.yt-embed { position: relative; width: 100%; max-width: 480px; aspect-ratio: 16/9; background: #000; border-radius: 6px; overflow: hidden; cursor: pointer; }
+.yt-embed img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.yt-embed .yt-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 42px; border-radius: 8px; background: rgba(0, 0, 0, 0.7); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.yt-embed:hover .yt-play { background: rgba(204, 0, 0, 0.85); }
+.yt-embed .yt-play::after { content: ""; display: block; border-left: 16px solid white; border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+.yt-embed iframe { width: 100%; height: 100%; border: 0; }
+.yt-fallback-row { margin-top: 6px; display: flex; gap: 8px; align-items: center; font-size: 12px; color: #6B7280; }
+.q-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #E2E8F0; }
+@media (max-width: 700px) { .q-row { grid-template-columns: 1fr; } .yt-embed { max-width: 100%; } }
+.q-cell label { display: block; font-size: 12px; color: #1E2761; font-weight: 600; margin-bottom: 4px; }
+.q-cell select { width: 100%; padding: 6px 8px; border: 1px solid #E2E8F0; border-radius: 4px; font-size: 13px; background: white; }
+.q-cell.hidden { display: none; }
+.save-status { position: fixed; bottom: 12px; right: 12px; background: white; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 12px; font-size: 11px; color: #6B7280; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.progress-bar { height: 6px; background: #E2E8F0; border-radius: 3px; overflow: hidden; margin: 6px 0; }
+.progress-fill { height: 100%; background: #047857; transition: width 0.2s; }
+.codebook-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+.codebook-overlay.show { display: flex; }
+.codebook-modal { background: white; border-radius: 8px; max-width: 820px; max-height: 90vh; overflow-y: auto; padding: 24px; }
+.codebook-modal h2 { margin: 0 0 12px 0; color: #1E2761; }
+.codebook-modal h3 { margin: 16px 0 6px 0; color: #1E2761; font-size: 15px; }
+.codebook-modal h4 { margin: 12px 0 4px 0; color: #1E2761; font-size: 13px; }
+.codebook-modal table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 6px 0; }
+.codebook-modal th, .codebook-modal td { border: 1px solid #E2E8F0; padding: 6px 8px; text-align: left; vertical-align: top; }
+.codebook-modal th { background: #F8FAFC; }
+.codebook-modal code { background: #F8FAFC; padding: 1px 4px; border-radius: 3px; font-size: 11.5px; }
+.codebook-close { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: #6B7280; }
+.warn { background: #FEF3C7; border-left: 3px solid #B45309; padding: 10px 14px; font-size: 13px; color: #92400E; border-radius: 4px; margin: 10px 0; }
+.success { background: #D1FAE5; border-left: 3px solid #047857; padding: 10px 14px; font-size: 13px; color: #065F46; border-radius: 4px; margin: 10px 0; }
+.email-panel { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin-top: 16px; }
+.email-panel h3 { color: #1E2761; margin-top: 0; }
+.email-panel h4 { color: #1E2761; margin: 0 0 8px 0; }
+/* Training-page-specific styles */
+.train-feedback { margin-top: 14px; padding: 14px; border-radius: 6px; }
+.train-feedback.correct { background: #D1FAE5; border-left: 4px solid #047857; }
+.train-feedback.wrong { background: #FEE2E2; border-left: 4px solid #B91C1C; }
+.train-feedback h3 { margin: 0 0 8px 0; font-size: 15px; }
+.train-feedback.correct h3 { color: #065F46; }
+.train-feedback.wrong h3 { color: #7F1D1D; }
+.train-feedback .field { margin: 6px 0; font-size: 13px; }
+.train-feedback .field .ok { color: #047857; font-weight: 600; }
+.train-feedback .field .no { color: #B91C1C; font-weight: 600; }
+.train-feedback .reasoning { font-size: 12px; color: #4B5563; margin-top: 3px; padding-left: 12px; border-left: 2px solid #E2E8F0; }
+.train-progress-num { font-weight: 600; color: #1E2761; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Training — 10 videos</h1>
+  <div class="sub">
+    <a href="index.html" class="top-link">← Home</a>
+    <a href="#" class="top-link" onclick="openCodebook(); return false;">Codebook</a>
+  </div>
+</header>
+
+<div class="container">
+
+<div id="no-pid-warning" class="warn" style="display:none;">
+  Please <a href="index.html">go back to the home page</a> and enter your Prolific ID first.
+</div>
+
+<div id="training-intro" class="card">
+  <h2>Practice before the main task</h2>
+  <p>Here are 10 real YouTube videos to practise on. For each one:</p>
+  <ol>
+    <li>Watch the first 60–90 seconds and read the title and description.</li>
+    <li>Answer the three empowerment questions.</li>
+    <li>Click <strong>Check answer</strong>.</li>
+    <li>If you got it right, click <strong>Next</strong> to move on.</li>
+    <li>If you did not, the app will show you which answers to change. Fix them and try again.</li>
+  </ol>
+  <p>You cannot skip a video. You need to match the codebook on all three questions before moving to the next one. This should take about 15–20 minutes.</p>
+  <p>If you need the codebook again, click <strong>Codebook</strong> in the top bar.</p>
+</div>
+
+<div class="card" style="margin-bottom: 12px; padding: 12px 16px;">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div>Progress: <span class="train-progress-num" id="train-progress-text">0 / 10</span></div>
+    <button class="btn" id="continue-btn" style="display:none;" onclick="location.href='index.html'">Continue to main coding →</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="train-progress-fill" style="width:0%"></div></div>
+</div>
+
+<div id="training-content"></div>
+
+<div class="codebook-overlay" id="codebook-overlay">
+  <div class="codebook-modal">
+    <button class="codebook-close" onclick="closeCodebook()">&times;</button>
+    
+<h2>Codebook</h2>
+
+<p><em>Keep this open while you code. Click "Codebook" in the top bar at any time to see it again.</em></p>
+
+<h3>What are you coding?</h3>
+<p>You will watch short videos posted on YouTube by real companies. Every video talks about or shows <strong>AI (artificial intelligence)</strong>. Your job is to say what the video shows about AI empowering people or firms.</p>
+
+<h3>What is empowerment?</h3>
+<p>A video is <strong>empowering</strong> when it shows AI giving someone something new:</p>
+<ul>
+  <li>A <strong>new ability</strong> to do things (do more, do it faster, do it better)</li>
+  <li>A <strong>new way to create</strong> — art, writing, designs, music, ideas, personalized content</li>
+  <li>More <strong>control or choice</strong> in their work or their lives</li>
+  <li>New <strong>ways to act on their values</strong> — fairness, safety, ethics, inclusion, equity</li>
+</ul>
+<p>The "someone" can be a <strong>person</strong> (a shopper, a worker, an artist, a citizen) or a <strong>firm</strong> (a company using AI).</p>
+
+<h3>How to watch each video</h3>
+<p style="background:#FEF3C7; border-left:3px solid #B45309; padding:10px 12px; border-radius:4px;">
+  Watch the <strong>first 60-90 seconds</strong> of each video. Read the title and description shown below it. You do not need to watch the whole video.
+</p>
+
+<hr>
+
+<h3>Question 1: Is empowerment present in this video?</h3>
+<p><strong>Yes</strong> — the video shows AI giving someone (a person or a firm) any of the four things listed above (new ability, new way to create, more control, or a new way to act on values).</p>
+<p><strong>No</strong> — the video is pure technology talk, business news, a corporate milestone (like an IPO or an award), or an AI mention without showing anyone benefiting.</p>
+<p><em>Quick test:</em> after watching, can you name a person or a firm who gains ability, creativity, control, or a values-aligned outcome? If yes -> Yes. If no -> No.</p>
+
+<hr>
+
+<h3>Question 2 (only if you answered Yes): Who is empowered?</h3>
+<p>Pick one. Ask yourself: <strong>who is DOING the action shown in the video?</strong></p>
+<p>Not who is on the screen. Not who is talking. Not who benefits at the end. <strong>Who is doing the action.</strong></p>
+
+<table>
+  <tr><th>Category</th><th>What it means</th></tr>
+  <tr>
+    <td><code>INDIVIDUAL</code></td>
+    <td>A person — a shopper, a worker, an artist, a citizen. AI is a <strong>tool</strong> in their hands. They are doing the work; AI helps.</td>
+  </tr>
+  <tr>
+    <td><code>FIRM</code></td>
+    <td>A company as a whole (and its AI). AI is the one <strong>doing the action</strong>; people watch or receive.</td>
+  </tr>
+</table>
+
+<h4>Examples that make the difference clear</h4>
+<table>
+  <tr><th>What the video says</th><th>Who is doing the action</th><th>Code</th></tr>
+  <tr><td>"You write better emails with AI"</td><td>you write</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"AI writes personalized emails for you"</td><td>AI writes</td><td><code>FIRM</code></td></tr>
+  <tr><td>"AI empowers your team to focus on strategy"</td><td>your team focuses</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"Our AI automates customer service"</td><td>AI automates</td><td><code>FIRM</code></td></tr>
+  <tr><td>"You choose from AI-curated options"</td><td>you choose</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"AI recommends products for you"</td><td>AI recommends</td><td><code>FIRM</code></td></tr>
+  <tr><td>"Citizens shape ethical guidelines"</td><td>citizens shape</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"Our responsible AI principles guide our deployment"</td><td>firm sets principles</td><td><code>FIRM</code></td></tr>
+</table>
+
+<h4>What if the video shows both?</h4>
+<p>Some videos mention both a firm action and a person action. Example: <em>"Our AI handles the boring stuff so your team can focus on strategy."</em></p>
+<p>In cases like this, code by the video's <strong>main point</strong> — the title, the first line of the description, or the first 30 seconds of talking:</p>
+<ul>
+  <li>If "your team can focus on strategy" is the main point -> <code>INDIVIDUAL</code></li>
+  <li>If "AI handles the boring stuff" is the main point -> <code>FIRM</code></li>
+</ul>
+
+<hr>
+
+<h3>Question 3 (only if you answered Yes): Which type of empowerment?</h3>
+<p>Pick one. <strong>Check the types in this order</strong>, and code the FIRST one that fits.</p>
+
+<div style="background:#EFF6FF; border-left:3px solid #1E2761; padding:12px 14px; border-radius:4px; margin:12px 0;">
+<strong>The order matters.</strong> This is the same order the AI classifier uses, so you and the AI apply the same rule.
+</div>
+
+<ol style="line-height:1.9;">
+  <li><strong>CREATIVE</strong> — Is the video mainly about AI <em>making something new</em>? Art, designs, writing, music, ideas, images, personalized content, campaigns. If yes -> code <code>CREATIVE</code> and stop.</li>
+  <li><strong>NORMATIVE</strong> — Is the video mainly about <em>values</em>? Ethics, fairness, safety, responsibility, sustainability, inclusion, equity, privacy, trust, responsible use. If yes -> code <code>NORMATIVE</code> and stop.</li>
+  <li><strong>AGENTIC</strong> — Is the video mainly about <em>control, autonomy, or workforce identity</em>? Someone deciding for themselves, overriding the AI, autonomous AI acting on someone's behalf, or a firm's people being upskilled / kept in the driver's seat / complemented by AI. If yes -> code <code>AGENTIC</code> and stop.</li>
+  <li><strong>OPERATIONAL</strong> — None of the above stood out? Code <code>OPERATIONAL</code>. This is the default: AI helps with a familiar task more efficiently. Save time, automate, streamline, do more with less.</li>
+</ol>
+
+<h4>Cue words for each type</h4>
+<table>
+  <tr><th>Type</th><th>What to look for</th><th>Cue words</th></tr>
+  <tr>
+    <td><code>CREATIVE</code></td>
+    <td>AI makes something new</td>
+    <td>create, generate, imagine, design, personalize, brainstorm, art, campaign</td>
+  </tr>
+  <tr>
+    <td><code>NORMATIVE</code></td>
+    <td>Values are front and center</td>
+    <td>responsible, ethical, fair, safe, inclusive, sustainable, equitable, trusted, privacy</td>
+  </tr>
+  <tr>
+    <td><code>AGENTIC</code></td>
+    <td>Control, autonomy, or workforce identity</td>
+    <td>you decide, your way, customize, take control, autonomous, adapt, in charge, upskill, complement your team, AI + human, amplify strengths</td>
+  </tr>
+  <tr>
+    <td><code>OPERATIONAL</code></td>
+    <td>Efficiency at a familiar task (default when nothing else stands out)</td>
+    <td>save time, automate, faster, streamline, easier, efficient, at scale, productivity</td>
+  </tr>
+</table>
+
+<hr>
+
+<h3>Reminders</h3>
+<ul>
+  <li>Your answers <strong>auto-save</strong>. You can pause and come back on the same device.</li>
+  <li>Each video <strong>turns green</strong> in the list once you have coded it.</li>
+  <li>The <strong>"Mark session complete"</strong> button appears at the top and bottom of the page once all 100 videos in the session are coded.</li>
+  <li>If a video is <strong>private or has been deleted</strong>, use the "video is private/deleted" button to mark it unviewable and move on.</li>
+  <li>If you are unsure whether the empowered party is a person or a firm, go back to Question 1 — you may not be sure empowerment is present at all.</li>
+</ul>
+
+  </div>
+</div>
+
+<div class="save-status" id="save-status">Loading&hellip;</div>
+
+<script>
+const STORAGE_NS = "jams_empowerment_v20";
+const TRAINING = [{"train_id": "t01", "video_id": "hNVrlp-yNto", "video_title": "Data-driven offer design", "video_description": "Discover how AI driven offer design enables offer performance predictability against key business KPI so you can grow revenue from personalized offers. Contact us: https://www.oracle.com/cx/contact-us/Customer Experience (CX) - https://www.oracle.com/cx/Oracle Advertising and CX Events - https://www.oracle.com/cx/events/Advertising - https://www.oracle.com/cx/advertising/Marketing - https://www.oracle.com/cx/marketing/Sales - https://www.oracle.com/cx/sales/Service - https://www.oracle.com/cx/service/What is CRM? - https://www.oracle.com/cx/what-is-crm/What is Customer Service? - https://www.oracle.com/cx/service/what-is-customer-service/What is Marketing Automation? -...", "audio_transcript": "Kind: captions Language: en as a product manager at Supremo as a product manager at Supremo Communications designing new product Communications designing new product offers you seldom have access to offers you seldom have access to Performance data for similar or existing Performance data for similar or existing offers in the market offers in the market let's see how Oracle helps you design let's see how Oracle helps you design offers right the first time offers right the first time manage the entire product offer manage the entire product offer lifecycle from a single launch point lifecycle from a single launch point the offer dashboard provides a the offer dashboard provides a comprehensive view of all available comprehensive view of all available offers and their status offers and their status elasticsearch quickly finds offers elasticsearch quickly finds offers matching specific criteria matching specific criteria here's the offer you've been working on here's the offer you've been working on let's analyze how well is expected to let's analyze how well is expected to perform perform perform start by adding the goal metrics you start by adding the goal metrics you want this offer to meet want this offer to meet then generate the analytics report then generate the analytics report when the analysis is complete when the analysis is complete the analytics results indicate the offer the analytics results indicate the offer is expected to underperform is expected to underperform kpi metrics-based analytics help you kpi metrics-based analytics help you design offers right the first time design offers right the first time providing recommendations to help the providing recommendations to help the offer meet your goals offer meet your goals recommendation 1 meets all required kpis recommendation 1 meets all required kpis let's review the details let's review the details the middle column shows the original the middle column shows the original pricing structure while the right shows pricing structure while the right shows the new recommendations the new recommendations easily apply the recommendation with one easily apply the recommendation with one click click click to see the update published to see the update published after a few weeks check Marketplace after a few weeks check Marketplace performance and explore ratings performance and explore ratings influences influences influences with your actions and smart with your actions and smart recommendations...", "channel_title": "Oracle", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "operational", "reasoning_empowerment": "Operational empowerment is present as the video foregrounds human stakeholders using AI tools to improve competence and capability in offer design.", "reasoning_who": "The product manager is the actor using AI analytics and recommendations to design offers, consistent with individual empowerment.", "reasoning_type": "The central claim and activity focus on improving familiar tasks (offer design) with AI assistance, matching operational empowerment markers."}, {"train_id": "t02", "video_id": "HIair_unXUQ", "video_title": "What is AI CRM and How Does it Work? | Salesforce", "video_description": "AI CRM is a powerful tool that transforms customer relationships by bringing marketing, sales, commerce, service, and IT teams together around a unified view of your customer. With AI for your CRM, you can unlock AI, that's not generic, but grounded in your customer and business data.• Generate personalized content in seconds — like search-optimized product descriptions and tailored marketing emails — in multiple languages • Analyze customer data to create precise segments, enabling targeted campaigns that resonate and convert.• Automate personalized email outreach and follow-ups around the clock, ensuring no lead slips through the cracks.• Predict and address customer issues before they...", "audio_transcript": "Kind: captions Language: en hi I'm Sydney sprinkl sales rep for the hi I'm Sydney sprinkl sales rep for the Fun Factory a candy manufacturer whose Fun Factory a candy manufacturer whose forecast has fizzled good thing we've forecast has fizzled good thing we've got an AIC CRM which is an evolution of got an AIC CRM which is an evolution of traditional CRM what is AIC traditional CRM what is AIC CRM it connects all of your customer CRM it connects all of your customer data from multiple sources on one data from multiple sources on one platform so that teams can use AI to platform so that teams can use AI to create the best most personalized create the best most personalized experiences sweet with secure and experiences sweet with secure and trusted AI now every employee across trusted AI now every employee across sales service Commerce marketing and it sales service Commerce marketing and it can generate and take action on can generate and take action on brilliant customer insights instantly brilliant customer insights instantly insights only an aicm can spot because insights only an aicm can spot because aicm is monitoring social media trends I aicm is monitoring social media trends I get an alert from marketing that our get an alert from marketing that our marshmallows are trending with teens marshmallows are trending with teens squad since we share a unified View of squad since we share a unified View of our customer and Company data my our customer and Company data my co-workers and I can collab fast turning co-workers and I can collab fast turning insights into inspiration like insights into inspiration like repositioning our marshmallows to stress repositioning our marshmallows to stress out students introducing power poofs the out students introducing power poofs the brain boosting Focus fueling marshmallow brain boosting Focus fueling marshmallow Isa from it kicks things off by setting Isa from it kicks things off by setting up all the automated AI powered up all the automated AI powered processes that keep team productivity processes that keep team productivity flowing Mac for marketing he uses AI to flowing Mac for marketing he uses AI to generate a new product landing page in generate a new product landing page in the Fun Factory brand voice while Chloe the Fun Factory brand voice while Chloe from Commerce generates dozens of search from Commerce generates dozens of search optimized product descriptions in optimized product descriptions in...", "channel_title": "Salesforce", "correct_empowerment": "yes", "correct_who": "firm", "correct_type": "creative", "reasoning_empowerment": "Creative empowerment is present because the video foregrounds AI generating novel personalized marketing content and product descriptions on behalf of the firm.", "reasoning_who": "The AI/firm is the actor generating content and automating processes, not the individual employees acting with AI as a tool.", "reasoning_type": "The primary frame is AI-generated novel content for the firm, matching the firm-creative empowerment type."}, {"train_id": "t03", "video_id": "PJlF_3omsfY", "video_title": "Workday's Customer Innovation Lab Amsterdam", "video_description": "Welcome to Workday's Customer Innovation Lab in Amsterdam! Join Angelique de Vries, President of EMEA, and Jan-Willem de Koster, Senior Manager, Solution Consulting, as they give you an inside look at our hands-on, interactive lab designed to spark ideas, solve challenges, and bring the future of work to life. Discover how real-time scenarios, AI-powered solutions, and collaborative experiences can help your business reimagine what’s possible with Workday.", "audio_transcript": "Kind: captions Language: en Hi, there. My name is Angelique De Vries and I'm the president for Workday here in EMEA. And it would be my pleasure to happily invite you here to the Customer Innovation Lab here in Amsterdam. It's an area designed for you to talk about your business opportunity and how we can help, from a Workday perspective to really be your sparring partner. So I would like to welcome you and hope to see you soon. The objective of the Customer Innovation Lab is to take our customers through a journey, inspire them, make them feel welcome, in this nice, cozy area where they can settle in Brainstorm together with our partners about business challenges and ambitions that they have and how Workday can address these. Now that everybody feels welcome, we kick off with an agenda that we've been preparing for them. We've been discussing challenges they have in finance and in HCM. And then here they can really see the Workday solutions in action addressing those business challenges that they have. And then they might think, nice. Now I've seen all of this, but what's the value that I get out of it. So here we have a couple of value drivers from the solution perspective, including customers and the value that they gain with using Workday. All of this to give them a great journey using this interactive digital table. So here at our digital whiteboard we can have discussions with them around maybe the priority matrix on what they've been hearing today. The impact, the urgency. Is it high? Is it low? They can vote on it. So we can help them to determine the next steps in a roadmap that they're building. in a nutshell, the Customer Innovation Lab is here for you and your teams. Come here. Feel welcome. Get inspired. Touch our products. Have interactions with us all to help you grow your journey in finance and HCM. Hope to see you soon.", "channel_title": "Workday", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "creative", "reasoning_empowerment": "Empowerment is present via the creative dimension, as customers co-create and collaborate with AI-powered tools to generate novel solutions and roadmaps.", "reasoning_who": "The human customers and their teams are the actors doing the brainstorming, voting, and decision-making with AI as a tool, confirming individual empowerment.", "reasoning_type": "The central claim and addressee activity foreground human-AI co-creation and collaborative ideation, matching the creative empowerment type on the individual side."}, {"train_id": "t04", "video_id": "WMKHf3YXwyg", "video_title": "Morgan Stanley Inclusive Ventures Lab | Meet Encounter AI", "video_description": "The Morgan Stanley Inclusive Ventures Lab promotes financial inclusion and provides access to capital for early-stage technology and technology-enabled companies. Companies like Encounter AI, that use digital conversational ordering solutions to provide faster, friendlier and more efficient service to customers, restaurants and retailers. Watch to find out more.", "audio_transcript": "Kind: captions Language: en we're starting to create that ecosystem we're starting to create that ecosystem and I think longterm we'll be able to and I think longterm we'll be able to change some of the odds that impact a change some of the odds that impact a lot of the communities my name is Derek lot of the communities my name is Derek AI counter AI is about bringing AI counter AI is about bringing artificial intelligence to Frontline artificial intelligence to Frontline workers to empower them with kind of a workers to empower them with kind of a suit of arms suit of arms with the intention that they can get with the intention that they can get better over time by adopting these better over time by adopting these Solutions and there are public outcomes Solutions and there are public outcomes for their businesses that help them grow for their businesses that help them grow faster in faster in scale there's possibilities and long scale there's possibilities and long term we can be transformation and build term we can be transformation and build the systems to actually impact the the systems to actually impact the communities that we all love and communities that we all love and [Music] [Music] [Music] serve", "channel_title": "Morgan Stanley", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "agentic", "reasoning_empowerment": "The video foregrounds agentic empowerment by showing frontline workers gaining autonomy and meaningfulness through AI tools.", "reasoning_who": "Frontline workers are depicted as the actors adopting and using AI solutions, preserving human agency.", "reasoning_type": "The central claim and actor test indicate autonomy and identity preservation for workers, matching the agentic type on the individual side."}, {"train_id": "t05", "video_id": "9uVfAaER_B0", "video_title": "Boost Productivity with Generative AI in Slack | Dreamforce 2023 | Salesforce", "video_description": "Explore the future of generative AI in Slack, your productivity platform. Learn how Slack will help you summarize conversations, uncover new insights, automate workflows, and more. Watch Dreamforce for FREE: https://sforce.co/48g1vBp#Salesforce #DreamforceSubscribe to Salesforce’s YouTube Channel: http://bit.ly/SalesforceSubscribeLearn more about Salesforce: https://www.salesforce.comFacebook: https://www.facebook.com/salesforceTwitter: https://www.twitter.com/salesforceInstagram: https://www.instagram.com/salesforceLinkedIn: https://www.linkedin.com/company/salesforceAbout Salesforce: Salesforce is the customer company, helping businesses of every size and industry put the customer at the...", "audio_transcript": "Kind: captions Language: en we're now in a world where AI can not we're now in a world where AI can not only help you do work but it'll help you only help you do work but it'll help you think better think better and what I mean by that is that it's and what I mean by that is that it's able to help you unlock mental agility able to help you unlock mental agility the ability to think faster and more the ability to think faster and more clearly in the moment using the clearly in the moment using the knowledge and expertise that you knowledge and expertise that you uniquely hold it's about amplifying your uniquely hold it's about amplifying your strengths and automating away all the strengths and automating away all the busy work busy work my name is Lauren Gill and I'm here to my name is Lauren Gill and I'm here to share how you can unlock this type of share how you can unlock this type of mental agility and boost productivity mental agility and boost productivity with AI and Slack with AI and Slack if you take a look here this is probably if you take a look here this is probably what many of you of you all feel like what many of you of you all feel like every day your workday is fractured one every day your workday is fractured one moment you might be in a Google doc moment you might be in a Google doc reviewing comments the next you might be reviewing comments the next you might be in an Asana task updating statuses and in an Asana task updating statuses and then you're over to your inbox to then you're over to your inbox to respond to customer email respond to customer email and it's not just your systems either and it's not just your systems either your team needs your help too you've got your team needs your help too you've got people who are opinion you about people who are opinion you about feedback on a decision or they need you feedback on a decision or they need you to approve a purchase order or they to approve a purchase order or they might need your help answering a ticket might need your help answering a ticket the list goes on the list goes on and all the C and all of this noise who and all the C and all of this noise who is left to be the glue that keeps all of is left to be the glue that keeps all of this work together across your people this work together across your people and your tools and your tools it's you it's me it's all of us each of it's you it's me it's all of us each of us are individually playing mental us are individually...", "channel_title": "Salesforce", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "agentic", "reasoning_empowerment": "Agentic empowerment is present as the video foregrounds human autonomy and identity preservation with AI complementing human mental agility.", "reasoning_who": "The individual knowledge worker is the actor using AI as a tool to enhance their thinking and productivity.", "reasoning_type": "The central claim and addressee activity emphasize autonomy and meaningfulness of work, consistent with agentic empowerment on the individual side."}, {"train_id": "t06", "video_id": "q64RQRksQZs", "video_title": "Unlock the Potential of Your Workforce With AI | Think Again", "video_description": "For more insights on building a value-driving AI strategy for your business, visit: https://gtnr.it/3ETpxoh Many of us have heard that thanks to AI, whole job categories may become irrelevant. But what if the more strategic approach is to determine how to use AI to make us more creative and productive?Think Again is a Gartner Original Series that explores breakthrough trends and reveals new ways to think about the future. This episode features:1. What we misunderstand about AI — and how we should be thinking about it instead2. Gartner’s predictions for AI’s impact on jobs3. The three stages of AI opportunity ahead 4. Three things executives and their teams can do now to prepareSubscribe:...", "audio_transcript": "Kind: captions Language: en as a business leader you've heard that as a business leader you've heard that with AI there are whole swaths of your with AI there are whole swaths of your staff that you will no longer need staff that you will no longer need writers coders analysts and on and on writers coders analysts and on and on that you will have to rethink the people that you will have to rethink the people you'll need to succeed and you need to you'll need to succeed and you need to do it now our research suggests that do it now our research suggests that rather than thinking about what jobs rather than thinking about what jobs will be lost to AI consider what work will be lost to AI consider what work needs to be done needs to be done what if the more strategic view is how what if the more strategic view is how to use AI to make us better more to use AI to make us better more creative and more productive this is creative and more productive this is think again the Gartner original series think again the Gartner original series that explores breakthrough Trends and that explores breakthrough Trends and reveals new ways to think about the reveals new ways to think about the future we start with Gartner future we start with Gartner distinguished VP analyst Mary masaglio distinguished VP analyst Mary masaglio Mary Help us out talk about AI is Mary Help us out talk about AI is everywhere how should we be thinking everywhere how should we be thinking about it I think everybody thinks of AI about it I think everybody thinks of AI primarily as a technology or a set of primarily as a technology or a set of Technologies and that's not really right Technologies and that's not really right just in the age of the computer so you just in the age of the computer so you know not cavemen and cudgels but just know not cavemen and cudgels but just say the last 50 years we've thought of say the last 50 years we've thought of the machine more as a tool a the machine more as a tool a supercomputer a calculator and supercomputer a calculator and information provider but as we enter information provider but as we enter this new age of AI I think it's more this new age of AI I think it's more useful for us to think of the machine as useful for us to think of the machine as our teammate and that's a really our teammate and that's a really profound shift in how humans and profound shift in how humans and machines interact I think the attitude machines interact I think the...", "channel_title": "Gartner", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "agentic", "reasoning_empowerment": "Agentic empowerment is present as the video foregrounds human autonomy and identity preservation in using AI as a teammate.", "reasoning_who": "Humans (business leaders and workforce) are depicted as the actors using AI as a complement, preserving human agency.", "reasoning_type": "The central claim and actor test indicate agentic empowerment focused on human autonomy and meaningful collaboration with AI."}, {"train_id": "t07", "video_id": "Y8lcsC6M7vM", "video_title": "Einstein Puts Time on Crexi’s Side | Salesforce", "video_description": "Crexi improves efficiency with Sales AI. Einstein handles customer call summaries and sales email drafts, saving reps five hours a day to close customer deals.Learn more: https://salesforce.com/customers#Salesforce #CustomerSuccess #CustomerStorySubscribe to Salesforce’s YouTube Channel: http://bit.ly/SalesforceSubscribeLearn more about Salesforce: https://www.salesforce.com Facebook: https://www.facebook.com/salesforce Twitter: https://www.twitter.com/salesforce Instagram: https://www.instagram.com/salesforce LinkedIn: https://www.linkedin.com/company/salesforceAbout Salesforce: Salesforce is the #1 AI CRM, helping companies connect with customers in a whole new way. Our product portfolio,...", "audio_transcript": "Kind: captions Language: en commercial real estate is very much a commercial real estate is very much a relationship business I don't think the relationship business I don't think the future is robots making sales calls or future is robots making sales calls or robots sending robots sending emails CX is essentially a Marketplace emails CX is essentially a Marketplace for commercial real estate our customers for commercial real estate our customers are Property Owners landlords tenants are Property Owners landlords tenants prospective buyers a lot of the sort of prospective buyers a lot of the sort of tools and products out there are pretty tools and products out there are pretty Antiquated and so what CX is aiming to Antiquated and so what CX is aiming to do is adding speed and liquidity to an do is adding speed and liquidity to an industry that can sometimes be bit slow industry that can sometimes be bit slow sales AI is really disrupting and sales AI is really disrupting and changing how we do business ultimately changing how we do business ultimately making our reps more efficient and making our reps more efficient and giving them better data and more data giving them better data and more data faster what sales AI is doing for us is faster what sales AI is doing for us is allowing us to make our team on the allowing us to make our team on the field as efficient as they can be so field as efficient as they can be so that they can focus on our customers and that they can focus on our customers and not stuff behind the scenes the team not stuff behind the scenes the team loves it looking at related records or loves it looking at related records or pulling like a contact history report pulling like a contact history report all of that was done in about 30 seconds all of that was done in about 30 seconds we're reducing probably somewhere we're reducing probably somewhere between 3 to 4 hours a day of work for between 3 to 4 hours a day of work for sales reps so that's huge our team is sales reps so that's huge our team is using next best action and so if a using next best action and so if a salesperson can understand what it is salesperson can understand what it is that's going to resonate with that that's going to resonate with that customer they can have a more productive customer they can have a more productive conversation that's good for us and conversation that's good for us and that's good for the customer we really that's good for the customer we...", "channel_title": "Salesforce", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "operational", "reasoning_empowerment": "Operational empowerment is present as AI assists sales reps to perform familiar tasks more efficiently, enhancing their capability.", "reasoning_who": "The sales reps are the actors using AI as a tool to improve their work, not the firm or AI acting autonomously.", "reasoning_type": "The central claim foregrounds human capability improvement with AI assistance, matching operational empowerment on the individual side."}, {"train_id": "t08", "video_id": "8BNo1sM7wFw", "video_title": "5 essentials to know about generative AI from Google", "video_description": "Ready to get started with generative AI? Here are the 5 must-knows for younger users and parents to learn how to use it responsibly.Subscribe to our Channel: https://www.youtube.com/googleTweet with us on Twitter: https://twitter.com/googleFollow us on Instagram: https://www.instagram.com/googleJoin us on Facebook: https://www.facebook.com/Google", "audio_transcript": "Kind: captions Language: en [uplifting music, female voice narrates] Ready to get started with generative AI? Here are five must knows. AI might provide a response that seems so unique, you may wonder if it's human. But AI can't think for itself, or feel emotions. It's just great at picking up patterns, known as training. AI can help you kickstart the creative process, but it's not there to do the work for you. That's your role as the creator. Since generative AI is a work in progress, it may make things up known as a hallucination. For example, it may predict who the top gymnast in 2035 will be even though this information isn't available yet. Always check information that's presented as fact. When in doubt, double check it with Google search. Generative AI is a quickly evolving technology, which is why it's critical that it's developed and used responsibly. Learn more at ai.google", "channel_title": "Google", "correct_empowerment": "yes", "correct_who": "individual", "correct_type": "normative", "reasoning_empowerment": "The video foregrounds normative empowerment by emphasizing responsible AI development and use, and human participation in verifying AI outputs.", "reasoning_who": "The human users (younger users and parents) are the actors responsible for verifying AI outputs and using AI responsibly, preserving human agency.", "reasoning_type": "The central claim emphasizes values and ethics in AI use, with humans participating in shaping responsible AI behavior, matching normative empowerment."}, {"train_id": "t09", "video_id": "KeHdV8JeQqo", "video_title": "Technology's Role in Breaking Down Access Barriers", "video_description": "In this episode of the Tyler Tech Podcast, we begin a special two-part series on the concept of access, exploring how technology helps organizations break down barriers and provide equitable access to services, resources, and opportunities. We welcome four experts from Tyler Technologies, each sharing insights on how technology can improve access across different sectors.Kristine Lim, product manager in Tyler’s Data & Insights division, explains how data-driven tools can measure and improve access to public services. Urvi Pandya, general manager of workforce case management, discusses how technology can create safe, accessible work environments. Industry engagement consultant Kim Martin...", "audio_transcript": "Kind: captions Language: en [Music] [Music] [Music] especially after covid right A lot of especially after covid right A lot of people work from home a lot of people people work from home a lot of people teley work part-time full-time it's teley work part-time full-time it's become even more critical to have that become even more critical to have that open and safe environment where again open and safe environment where again doesn't matter where you are but you doesn't matter where you are but you Community from Tyler Technologies it's Community from Tyler Technologies it's the Tyler Tech podcast your source for the Tyler Tech podcast your source for insightful conversations with thought insightful conversations with thought leaders addressing key issues impacting leaders addressing key issues impacting the public sector today I'm Josh the public sector today I'm Josh Henderson part of the corporate Henderson part of the corporate marketing team here at Tyler and we're marketing team here at Tyler and we're excited to have you with us every excited to have you with us every episode we explore the Technologies episode we explore the Technologies Trends and strategies shaping our Trends and strategies shaping our communities and highlight the people and communities and highlight the people and Innovations driving the public sector if Innovations driving the public sector if you enjoy our podcast please consider you enjoy our podcast please consider subscribing giving a five-star rating subscribing giving a five-star rating and sharing the podcast with others and sharing the podcast with others today we're bringing you the first part today we're bringing you the first part of a special two-part series focused on of a special two-part series focused on the idea of access and how technology the idea of access and how technology can expand access to essential Services can expand access to essential Services information and opportunities for all in information and opportunities for all in this episode we're joined by four expert this episode we're joined by four expert voices from Tyler each sharing how voices from Tyler each sharing how technology is breaking down barriers and technology is breaking down barriers and creating more Equitable access in creating more Equitable access in different different different sectors first up is Christine limb sectors first up is Christine limb product manager in Tyler's data and product manager in Tyler's data and...", "channel_title": "tylertech", "correct_empowerment": "yes", "correct_who": "firm", "correct_type": "normative", "reasoning_empowerment": "The video foregrounds normative empowerment by focusing on the firm's role in implementing technology to promote equitable access and inclusion.", "reasoning_who": "The firm is the actor deploying technology to break down access barriers, not individual stakeholders acting with AI.", "reasoning_type": "The central claim and markers emphasize the firm's ethical and inclusive framework to improve access, matching normative empowerment on the firm side."}, {"train_id": "t10", "video_id": "UeZWTXVlZsw", "video_title": "Why Adopting Comprehensive Data Governance Practices Can Ensure the Reliability of AI Systems", "video_description": "Mike McGovern, Principal and Global Head of Technology Engagement for Investor Services at Brown Brothers Harriman and Anthony Woodward, Founder & CEO of RecordPoint, join Jill Malandrino on Nasdaq TradeTalks to discuss why adopting comprehensive data governance practices can allow organizations to ensure the reliability, ethics, and security of their AI systems, ultimately driving better business outcomes.———————————— Website: https://www.nasdaq.com/tradetalksTwitter: https://twitter.com/TradeTalksSubscribe to the TradeTalks Newsletter: https://www.nasdaq.com/subscribetradetalks", "audio_transcript": "Kind: captions Language: en [Music] [Music] [Music] Welcome to NASDAQ trade talks where we Welcome to NASDAQ trade talks where we meet with the top thought leaders and meet with the top thought leaders and strategists in emerging technologies, strategists in emerging technologies, digital assets, the regulatory landscape digital assets, the regulatory landscape and capital markets. I'm your host Jill and capital markets. I'm your host Jill Malendrino and joining us this afternoon Malendrino and joining us this afternoon we have Mike McGovern, principal and we have Mike McGovern, principal and global head of technology engagement for global head of technology engagement for investor services at Brown Brothers investor services at Brown Brothers Haramman as well as Anthony Woodward, Haramman as well as Anthony Woodward, founder and CEO of RecordPoint. We're founder and CEO of RecordPoint. We're here to discuss why adopting here to discuss why adopting comprehensive data governance practices comprehensive data governance practices can allow organizations to ensure can allow organizations to ensure reliability, ethics, and security their reliability, ethics, and security their AI systems ultimately driving better AI systems ultimately driving better business outcomes. Certainly sounds like business outcomes. Certainly sounds like that privy privacy first, cyber first that privy privacy first, cyber first mentality driving the culture at mentality driving the culture at organizations these days. Anthony, tell organizations these days. Anthony, tell us what's driving tech stack decisions us what's driving tech stack decisions at this point. at this point. Look, there's a multitude of factors, Look, there's a multitude of factors, but I'd be very remissed to not start but I'd be very remissed to not start with AI and and uh the whole notion of with AI and and uh the whole notion of agentic behavior. Every room, every agentic behavior. Every room, every conversation I walk into right now is conversation I walk into right now is talking about um AI. And look, I think talking about um AI. And look, I think really when you talk about tech stack, really when you talk about tech stack, at the very bottom of that is data. Um at the very bottom of that is data. Um so it really is a conversation about so it really is a conversation about data everywhere. Yeah. And Michael, you data everywhere. Yeah. And Michael, you make that note as well that the one with make that note...", "channel_title": "Nasdaq", "correct_empowerment": "yes", "correct_who": "firm", "correct_type": "normative", "reasoning_empowerment": "The video foregrounds normative empowerment by focusing on firm-level ethical, reliable, and secure AI governance practices.", "reasoning_who": "The firm is the actor adopting governance practices and setting ethical frameworks, not individual stakeholders.", "reasoning_type": "The central claim and actor test indicate firm-level normative empowerment through ethical AI governance."}];
+const N_TRAINING = TRAINING.length;
+
+function loadGlobal() { try { return JSON.parse(localStorage.getItem(STORAGE_NS + "_global")) || {}; } catch(e) { return {}; } }
+function loadTraining() { try { return JSON.parse(localStorage.getItem(STORAGE_NS + "_training")) || {completed: [], attempts: []}; } catch(e) { return {completed: [], attempts: []}; } }
+function saveTraining(t) { localStorage.setItem(STORAGE_NS + "_training", JSON.stringify(t)); }
+
+function openCodebook() { document.getElementById("codebook-overlay").classList.add("show"); }
+function closeCodebook() { document.getElementById("codebook-overlay").classList.remove("show"); }
+
+function escapeHtml(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function loadEmbed(el) {
+  const vid = el.dataset.vid;
+  if (!vid) return;
+  el.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+}
+
+function currentIdx() {
+  const t = loadTraining();
+  const done = new Set((t.completed || []));
+  for (let i = 0; i < TRAINING.length; i++) {
+    if (!done.has(TRAINING[i].train_id)) return i;
+  }
+  return TRAINING.length;   // all done
+}
+
+function renderTraining() {
+  const g = loadGlobal();
+  if (!g.prolific_id) {
+    document.getElementById("no-pid-warning").style.display = "block";
+    document.getElementById("training-content").innerHTML = "";
+    return;
+  }
+
+  const idx = currentIdx();
+  const t = loadTraining();
+  const nDone = (t.completed || []).length;
+  document.getElementById("train-progress-text").textContent = `${nDone} / ${N_TRAINING}`;
+  document.getElementById("train-progress-fill").style.width = ((nDone / N_TRAINING) * 100) + "%";
+  document.getElementById("save-status").textContent = `Prolific ID: ${g.prolific_id}`;
+
+  if (idx >= TRAINING.length) {
+    document.getElementById("training-content").innerHTML = `
+      <div class="card success">
+        <h3 style="color:#065F46; margin:0 0 8px 0;">🎉 Training complete!</h3>
+        <p>You matched the codebook on all ${N_TRAINING} videos. You are ready for the main coding task.</p>
+      </div>
+    `;
+    document.getElementById("continue-btn").style.display = "";
+    return;
+  }
+
+  document.getElementById("continue-btn").style.display = "none";
+
+  const item = TRAINING[idx];
+  const vid = item.video_id;
+  const thumb = `https://img.youtube.com/vi/${escapeHtml(vid)}/hqdefault.jpg`;
+  const ytwatch = `https://www.youtube.com/watch?v=${escapeHtml(vid)}`;
+
+  document.getElementById("training-content").innerHTML = `
+    <div class="post" data-train-id="${item.train_id}">
+      <div class="post-num">Training video ${idx + 1} of ${N_TRAINING}</div>
+      <div class="yt-wrap">
+        <div class="yt-embed" data-vid="${escapeHtml(vid)}" onclick="loadEmbed(this)">
+          <img src="${thumb}" loading="lazy" alt="Click to play">
+          <button class="yt-play" aria-label="Play video"></button>
+        </div>
+        <div class="yt-fallback-row">
+          <a href="${ytwatch}" target="_blank" rel="noopener" class="btn-yt">▶ Open on YouTube</a>
+          <span>if the video does not play here</span>
+        </div>
+      </div>
+      <div class="post-meta"><span>${escapeHtml(item.channel_title)}</span></div>
+      <div class="post-title">${escapeHtml(item.video_title)}</div>
+      <div class="post-desc">${escapeHtml(item.video_description) || "(no description)"}</div>
+
+      <div class="q-row">
+        <div class="q-cell">
+          <label>1. Is empowerment present?</label>
+          <select id="q-emp" onchange="onEmpChange()">
+            <option value=""></option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="q-cell" id="q-who-cell">
+          <label>2. Who is empowered?</label>
+          <select id="q-who">
+            <option value=""></option>
+            <option value="individual">INDIVIDUAL</option>
+            <option value="firm">FIRM</option>
+          </select>
+        </div>
+        <div class="q-cell" id="q-type-cell">
+          <label>3. Which type?</label>
+          <select id="q-type">
+            <option value=""></option>
+            <option value="creative">CREATIVE</option>
+            <option value="normative">NORMATIVE</option>
+            <option value="agentic">AGENTIC</option>
+            <option value="operational">OPERATIONAL</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <button class="btn" id="check-btn" onclick="checkTraining()">Check answer</button>
+      </div>
+
+      <div id="train-feedback"></div>
+    </div>
+  `;
+  onEmpChange();
+}
+
+function onEmpChange() {
+  const emp = document.getElementById("q-emp").value;
+  const whoCell = document.getElementById("q-who-cell");
+  const typeCell = document.getElementById("q-type-cell");
+  if (emp === "yes") {
+    whoCell.style.display = ""; typeCell.style.display = "";
+  } else {
+    whoCell.style.display = "none"; typeCell.style.display = "none";
+    document.getElementById("q-who").value = "";
+    document.getElementById("q-type").value = "";
+  }
+}
+
+function checkTraining() {
+  const idx = currentIdx();
+  if (idx >= TRAINING.length) return;
+  const item = TRAINING[idx];
+
+  const emp = document.getElementById("q-emp").value;
+  const who = document.getElementById("q-who").value;
+  const typ = document.getElementById("q-type").value;
+
+  if (!emp) { alert("Please answer Question 1."); return; }
+  if (emp === "yes" && (!who || !typ)) { alert("Please answer all three questions."); return; }
+
+  const correctEmp = (emp === item.correct_empowerment);
+  const correctWho = (emp === "no") || (who === item.correct_who);
+  const correctType = (emp === "no") || (typ === item.correct_type);
+  const allCorrect = correctEmp && correctWho && correctType;
+
+  // Log attempt
+  const t = loadTraining();
+  t.attempts = t.attempts || [];
+  t.attempts.push({
+    train_id: item.train_id,
+    video_id: item.video_id,
+    given: {empowerment: emp, empowerment_who: who, empowerment_type: typ},
+    correct: allCorrect,
+    at: new Date().toISOString()
+  });
+  if (allCorrect) {
+    t.completed = t.completed || [];
+    if (!t.completed.includes(item.train_id)) t.completed.push(item.train_id);
+  }
+  saveTraining(t);
+
+  // Render feedback panel
+  const panel = document.getElementById("train-feedback");
+  document.getElementById("check-btn").style.display = "none";
+
+  const fieldRow = (label, given, correct, ok, reasoning) => `
+    <div class="field">
+      <strong>${label}:</strong>
+      <span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'}</span>
+      Your answer: <code>${escapeHtml(given || '—')}</code>
+      ${ok ? '' : ` — Codebook says: <code>${escapeHtml(correct).toUpperCase()}</code>`}
+      <div class="reasoning">${escapeHtml(reasoning)}</div>
+    </div>
+  `;
+
+  let bodyHtml = "";
+  bodyHtml += fieldRow("Empowerment", emp, item.correct_empowerment, correctEmp, item.reasoning_empowerment);
+  if (item.correct_empowerment === "yes") {
+    bodyHtml += fieldRow("Who", who, item.correct_who, correctWho, item.reasoning_who);
+    bodyHtml += fieldRow("Type", typ, item.correct_type, correctType, item.reasoning_type);
+  }
+
+  const actionBtn = allCorrect
+    ? `<button class="btn" onclick="nextTraining()">Next video →</button>`
+    : `<button class="btn" onclick="tryAgain()">Try again</button>`;
+
+  panel.innerHTML = `
+    <div class="train-feedback ${allCorrect ? 'correct' : 'wrong'}">
+      <h3>${allCorrect ? '✓ Correct!' : '✗ Not quite — have another look'}</h3>
+      ${bodyHtml}
+      <div style="margin-top:12px;">${actionBtn}</div>
+    </div>
+  `;
+}
+
+function tryAgain() {
+  // Rerender the same item; keeping any correct answers as-is would risk sticky wrong answers
+  // if the coder assumes they were correct. Safest: reset the form and let them re-select.
+  renderTraining();
+}
+
+function nextTraining() {
+  renderTraining();
+}
+
+window.addEventListener("DOMContentLoaded", renderTraining);
+</script>
+
+</body>
+</html>

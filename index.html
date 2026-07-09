@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Round 2 Coding — Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1F2937; background: #F8FAFC; line-height: 1.5; }
+header { background: #1E2761; color: white; padding: 16px 24px; }
+header h1 { margin: 0; font-size: 17px; font-weight: 600; }
+header .sub { margin-top: 4px; font-size: 12px; color: #CADCFC; }
+header a.top-link { color: #CADCFC; text-decoration: none; margin-left: 12px; font-size: 12px; border-bottom: 1px dotted #CADCFC; }
+header a.top-link:hover { color: white; border-color: white; }
+.container { max-width: 980px; margin: 0 auto; padding: 24px; }
+.card { background: white; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 12px 0; font-size: 17px; color: #1E2761; }
+.card h3 { margin: 16px 0 8px 0; font-size: 14px; color: #1E2761; }
+.card p, .card li { font-size: 14px; }
+input.text-input { padding: 10px 12px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 14px; width: 100%; max-width: 400px; }
+input.text-input:focus { outline: 2px solid #1E2761; outline-offset: -1px; }
+.btn { padding: 10px 18px; background: #1E2761; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn:hover { opacity: 0.9; }
+.btn:disabled { background: #9CA3AF; cursor: not-allowed; opacity: 1; }
+.btn-secondary { background: white; color: #1E2761; border: 1px solid #1E2761; }
+.btn-yt { background: #CC0000; color: white; border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-yt:hover { background: #A30000; }
+.pid-banner { background: #EFF6FF; border-left: 3px solid #1E2761; padding: 8px 12px; font-size: 13px; color: #1E2761; margin-bottom: 16px; border-radius: 4px; }
+.coding-tip { background: #FEF3C7; border-left: 3px solid #B45309; padding: 10px 14px; font-size: 13px; color: #92400E; border-radius: 4px; margin: 12px 0; }
+.session-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 6px; margin-bottom: 8px; background: white; }
+.session-row .name { font-weight: 500; }
+.session-row .status { font-size: 12px; color: #6B7280; }
+.session-row.complete { background: #D1FAE5; border-color: #047857; }
+.session-row.complete .status { color: #047857; font-weight: 500; }
+.session-row.locked { background: #F3F4F6; border-color: #D1D5DB; }
+.session-row.locked .status { color: #6B7280; font-style: italic; }
+.post { position: relative; border: 1px solid #E2E8F0; border-radius: 6px; padding: 14px; margin-bottom: 16px; background: white; }
+.post.coded { background: #ECFDF5; border-left: 4px solid #047857; }
+.post.coded::after { content: "¹3 coded"; position: absolute; top: 10px; right: 12px; background: #047857; color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.post.unviewable { background: #FEF3C7; border-left: 4px solid #B45309; }
+.post.unviewable::after { content: "A0 unviewable"; position: absolute; top: 10px; right: 12px; background: #B45309; color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.unviewable-controls { margin: 8px 0 0 0; display: flex; gap: 8px; align-items: center; }
+.btn-unviewable { background: #F8FAFC; color: #6B7280; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+.btn-unviewable:hover { background: #FEF3C7; color: #B45309; border-color: #B45309; }
+.unviewable-banner { display: none; padding: 12px; background: #FEF3C7; border-left: 3px solid #B45309; border-radius: 4px; margin-top: 10px; font-size: 13px; color: #92400E; }
+.unviewable-banner.show { display: block; }
+.unviewable-banner button { background: none; border: 1px solid #B45309; color: #B45309; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 8px; }
+.post-num { font-size: 12px; color: #6B7280; font-weight: 500; margin-bottom: 8px; }
+.post-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: #6B7280; margin-bottom: 4px; }
+.post-meta .duration { font-weight: 500; color: #1E2761; }
+.post-title { font-weight: 600; font-size: 15px; color: #1E2761; margin: 4px 0 6px 0; line-height: 1.35; }
+.post-desc { font-size: 12.5px; color: #374151; white-space: pre-wrap; max-height: 100px; overflow-y: auto; padding: 8px 10px; background: #F8FAFC; border-radius: 4px; margin-bottom: 4px; }
+.yt-wrap { margin-bottom: 10px; }
+.yt-embed { position: relative; width: 100%; max-width: 480px; aspect-ratio: 16/9; background: #000; border-radius: 6px; overflow: hidden; cursor: pointer; }
+.yt-embed img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.yt-embed .yt-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 42px; border-radius: 8px; background: rgba(0, 0, 0, 0.7); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.yt-embed:hover .yt-play { background: rgba(204, 0, 0, 0.85); }
+.yt-embed .yt-play::after { content: ""; display: block; border-left: 16px solid white; border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+.yt-embed iframe { width: 100%; height: 100%; border: 0; }
+.yt-fallback-row { margin-top: 6px; display: flex; gap: 8px; align-items: center; font-size: 12px; color: #6B7280; }
+.q-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #E2E8F0; }
+@media (max-width: 700px) { .q-row { grid-template-columns: 1fr; } .yt-embed { max-width: 100%; } }
+.q-cell label { display: block; font-size: 12px; color: #1E2761; font-weight: 600; margin-bottom: 4px; }
+.q-cell select { width: 100%; padding: 6px 8px; border: 1px solid #E2E8F0; border-radius: 4px; font-size: 13px; background: white; }
+.q-cell.hidden { display: none; }
+.save-status { position: fixed; bottom: 12px; right: 12px; background: white; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 12px; font-size: 11px; color: #6B7280; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.progress-bar { height: 6px; background: #E2E8F0; border-radius: 3px; overflow: hidden; margin: 6px 0; }
+.progress-fill { height: 100%; background: #047857; transition: width 0.2s; }
+.codebook-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+.codebook-overlay.show { display: flex; }
+.codebook-modal { background: white; border-radius: 8px; max-width: 820px; max-height: 90vh; overflow-y: auto; padding: 24px; }
+.codebook-modal h2 { margin: 0 0 12px 0; color: #1E2761; }
+.codebook-modal h3 { margin: 16px 0 6px 0; color: #1E2761; font-size: 15px; }
+.codebook-modal h4 { margin: 12px 0 4px 0; color: #1E2761; font-size: 13px; }
+.codebook-modal table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 6px 0; }
+.codebook-modal th, .codebook-modal td { border: 1px solid #E2E8F0; padding: 6px 8px; text-align: left; vertical-align: top; }
+.codebook-modal th { background: #F8FAFC; }
+.codebook-modal code { background: #F8FAFC; padding: 1px 4px; border-radius: 3px; font-size: 11.5px; }
+.codebook-close { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: #6B7280; }
+.warn { background: #FEF3C7; border-left: 3px solid #B45309; padding: 10px 14px; font-size: 13px; color: #92400E; border-radius: 4px; margin: 10px 0; }
+.success { background: #D1FAE5; border-left: 3px solid #047857; padding: 10px 14px; font-size: 13px; color: #065F46; border-radius: 4px; margin: 10px 0; }
+.email-panel { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin-top: 16px; }
+.email-panel h3 { color: #1E2761; margin-top: 0; }
+.email-panel h4 { color: #1E2761; margin: 0 0 8px 0; }
+/* Training-page-specific styles */
+.train-feedback { margin-top: 14px; padding: 14px; border-radius: 6px; }
+.train-feedback.correct { background: #D1FAE5; border-left: 4px solid #047857; }
+.train-feedback.wrong { background: #FEE2E2; border-left: 4px solid #B91C1C; }
+.train-feedback h3 { margin: 0 0 8px 0; font-size: 15px; }
+.train-feedback.correct h3 { color: #065F46; }
+.train-feedback.wrong h3 { color: #7F1D1D; }
+.train-feedback .field { margin: 6px 0; font-size: 13px; }
+.train-feedback .field .ok { color: #047857; font-weight: 600; }
+.train-feedback .field .no { color: #B91C1C; font-weight: 600; }
+.train-feedback .reasoning { font-size: 12px; color: #4B5563; margin-top: 3px; padding-left: 12px; border-left: 2px solid #E2E8F0; }
+.train-progress-num { font-weight: 600; color: #1E2761; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Round 2 — Empowerment Coding</h1>
+  <div class="sub">
+    <a href="#" class="top-link" onclick="openCodebook(); return false;">Codebook</a>
+  </div>
+</header>
+
+<div class="container">
+
+<div id="onboarding" style="display:none;">
+  <div class="card">
+    <h2>🎉 Welcome back — you passed round 1!</h2>
+    <p>Thanks so much for coming back. In round 1, you and the other coder mostly agreed on humor. That means we can keep those labels and skip humor this round — you only need to code empowerment this time.</p>
+    <p><strong>What is different this round:</strong> you will code the same 500 videos you saw in round 1, but only for <strong>empowerment</strong>. We refined the rules for empowerment based on what we learned in round 1, so the codebook is a bit different and we have a short training exercise for you before the main task starts.</p>
+    <p>We really need your help to get round 2 right. Thank you.</p>
+    <hr>
+    <p><strong>Please enter your Prolific ID to begin:</strong></p>
+    <input type="text" class="text-input" id="pid-input" placeholder="e.g., 5f6a2b1c3d4e5f6a7b8c9d0e" autocomplete="off">
+    <div style="margin-top:12px;">
+      <button id="save-pid-btn" class="btn">Save and continue</button>
+      <button class="btn btn-secondary" onclick="openCodebook()">View codebook</button>
+    </div>
+  </div>
+</div>
+
+<div id="main-panel" style="display:none;">
+  <div class="pid-banner">Prolific ID: <strong id="pid-display"></strong> &middot;
+    <a href="#" onclick="resetPID(); return false;" style="color:#1E2761;">change</a></div>
+
+  <div class="card" id="training-card">
+    <h2>Step 1 — Training</h2>
+    <p>Before you start on the 500 videos, please complete the short training exercise: 10 real videos, one at a time. For each video, you code the three empowerment questions and the app tells you whether you got it right. If not, you try again on the same video until you match the codebook. This should take about 15–20 minutes.</p>
+    <p id="training-status">Not started.</p>
+    <a href="training.html" class="btn" id="training-link">Start training</a>
+  </div>
+
+  <div class="card" id="sessions-card">
+    <h2>Step 2 — Main coding (5 sessions of 100 videos)</h2>
+    <p>Once training is complete, work through the five sessions in any order. Each session has 100 videos and takes about an hour. Your answers auto-save, so you can pause any time.</p>
+    
+        <div class="session-row locked" id="session-row-1">
+          <div>
+            <div class="name">Session 1</div>
+            <div class="status" id="session-status-1">Locked - complete training first (100 videos)</div>
+          </div>
+          <a href="session1.html" class="btn btn-secondary" id="session-link-1" style="pointer-events:none; opacity:0.5;">Open</a>
+        </div>
+        
+        <div class="session-row locked" id="session-row-2">
+          <div>
+            <div class="name">Session 2</div>
+            <div class="status" id="session-status-2">Locked - complete training first (100 videos)</div>
+          </div>
+          <a href="session2.html" class="btn btn-secondary" id="session-link-2" style="pointer-events:none; opacity:0.5;">Open</a>
+        </div>
+        
+        <div class="session-row locked" id="session-row-3">
+          <div>
+            <div class="name">Session 3</div>
+            <div class="status" id="session-status-3">Locked - complete training first (100 videos)</div>
+          </div>
+          <a href="session3.html" class="btn btn-secondary" id="session-link-3" style="pointer-events:none; opacity:0.5;">Open</a>
+        </div>
+        
+        <div class="session-row locked" id="session-row-4">
+          <div>
+            <div class="name">Session 4</div>
+            <div class="status" id="session-status-4">Locked - complete training first (100 videos)</div>
+          </div>
+          <a href="session4.html" class="btn btn-secondary" id="session-link-4" style="pointer-events:none; opacity:0.5;">Open</a>
+        </div>
+        
+        <div class="session-row locked" id="session-row-5">
+          <div>
+            <div class="name">Session 5</div>
+            <div class="status" id="session-status-5">Locked - complete training first (100 videos)</div>
+          </div>
+          <a href="session5.html" class="btn btn-secondary" id="session-link-5" style="pointer-events:none; opacity:0.5;">Open</a>
+        </div>
+        
+  </div>
+
+  <div id="email-panel-wrap"></div>
+</div>
+
+<div class="codebook-overlay" id="codebook-overlay">
+  <div class="codebook-modal">
+    <button class="codebook-close" onclick="closeCodebook()">&times;</button>
+    
+<h2>Codebook</h2>
+
+<p><em>Keep this open while you code. Click "Codebook" in the top bar at any time to see it again.</em></p>
+
+<h3>What are you coding?</h3>
+<p>You will watch short videos posted on YouTube by real companies. Every video talks about or shows <strong>AI (artificial intelligence)</strong>. Your job is to say what the video shows about AI empowering people or firms.</p>
+
+<h3>What is empowerment?</h3>
+<p>A video is <strong>empowering</strong> when it shows AI giving someone something new:</p>
+<ul>
+  <li>A <strong>new ability</strong> to do things (do more, do it faster, do it better)</li>
+  <li>A <strong>new way to create</strong> — art, writing, designs, music, ideas, personalized content</li>
+  <li>More <strong>control or choice</strong> in their work or their lives</li>
+  <li>New <strong>ways to act on their values</strong> — fairness, safety, ethics, inclusion, equity</li>
+</ul>
+<p>The "someone" can be a <strong>person</strong> (a shopper, a worker, an artist, a citizen) or a <strong>firm</strong> (a company using AI).</p>
+
+<h3>How to watch each video</h3>
+<p style="background:#FEF3C7; border-left:3px solid #B45309; padding:10px 12px; border-radius:4px;">
+  Watch the <strong>first 60-90 seconds</strong> of each video. Read the title and description shown below it. You do not need to watch the whole video.
+</p>
+
+<hr>
+
+<h3>Question 1: Is empowerment present in this video?</h3>
+<p><strong>Yes</strong> — the video shows AI giving someone (a person or a firm) any of the four things listed above (new ability, new way to create, more control, or a new way to act on values).</p>
+<p><strong>No</strong> — the video is pure technology talk, business news, a corporate milestone (like an IPO or an award), or an AI mention without showing anyone benefiting.</p>
+<p><em>Quick test:</em> after watching, can you name a person or a firm who gains ability, creativity, control, or a values-aligned outcome? If yes -> Yes. If no -> No.</p>
+
+<hr>
+
+<h3>Question 2 (only if you answered Yes): Who is empowered?</h3>
+<p>Pick one. Ask yourself: <strong>who is DOING the action shown in the video?</strong></p>
+<p>Not who is on the screen. Not who is talking. Not who benefits at the end. <strong>Who is doing the action.</strong></p>
+
+<table>
+  <tr><th>Category</th><th>What it means</th></tr>
+  <tr>
+    <td><code>INDIVIDUAL</code></td>
+    <td>A person — a shopper, a worker, an artist, a citizen. AI is a <strong>tool</strong> in their hands. They are doing the work; AI helps.</td>
+  </tr>
+  <tr>
+    <td><code>FIRM</code></td>
+    <td>A company as a whole (and its AI). AI is the one <strong>doing the action</strong>; people watch or receive.</td>
+  </tr>
+</table>
+
+<h4>Examples that make the difference clear</h4>
+<table>
+  <tr><th>What the video says</th><th>Who is doing the action</th><th>Code</th></tr>
+  <tr><td>"You write better emails with AI"</td><td>you write</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"AI writes personalized emails for you"</td><td>AI writes</td><td><code>FIRM</code></td></tr>
+  <tr><td>"AI empowers your team to focus on strategy"</td><td>your team focuses</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"Our AI automates customer service"</td><td>AI automates</td><td><code>FIRM</code></td></tr>
+  <tr><td>"You choose from AI-curated options"</td><td>you choose</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"AI recommends products for you"</td><td>AI recommends</td><td><code>FIRM</code></td></tr>
+  <tr><td>"Citizens shape ethical guidelines"</td><td>citizens shape</td><td><code>INDIVIDUAL</code></td></tr>
+  <tr><td>"Our responsible AI principles guide our deployment"</td><td>firm sets principles</td><td><code>FIRM</code></td></tr>
+</table>
+
+<h4>What if the video shows both?</h4>
+<p>Some videos mention both a firm action and a person action. Example: <em>"Our AI handles the boring stuff so your team can focus on strategy."</em></p>
+<p>In cases like this, code by the video's <strong>main point</strong> — the title, the first line of the description, or the first 30 seconds of talking:</p>
+<ul>
+  <li>If "your team can focus on strategy" is the main point -> <code>INDIVIDUAL</code></li>
+  <li>If "AI handles the boring stuff" is the main point -> <code>FIRM</code></li>
+</ul>
+
+<hr>
+
+<h3>Question 3 (only if you answered Yes): Which type of empowerment?</h3>
+<p>Pick one. <strong>Check the types in this order</strong>, and code the FIRST one that fits.</p>
+
+<div style="background:#EFF6FF; border-left:3px solid #1E2761; padding:12px 14px; border-radius:4px; margin:12px 0;">
+<strong>The order matters.</strong> This is the same order the AI classifier uses, so you and the AI apply the same rule.
+</div>
+
+<ol style="line-height:1.9;">
+  <li><strong>CREATIVE</strong> — Is the video mainly about AI <em>making something new</em>? Art, designs, writing, music, ideas, images, personalized content, campaigns. If yes -> code <code>CREATIVE</code> and stop.</li>
+  <li><strong>NORMATIVE</strong> — Is the video mainly about <em>values</em>? Ethics, fairness, safety, responsibility, sustainability, inclusion, equity, privacy, trust, responsible use. If yes -> code <code>NORMATIVE</code> and stop.</li>
+  <li><strong>AGENTIC</strong> — Is the video mainly about <em>control, autonomy, or workforce identity</em>? Someone deciding for themselves, overriding the AI, autonomous AI acting on someone's behalf, or a firm's people being upskilled / kept in the driver's seat / complemented by AI. If yes -> code <code>AGENTIC</code> and stop.</li>
+  <li><strong>OPERATIONAL</strong> — None of the above stood out? Code <code>OPERATIONAL</code>. This is the default: AI helps with a familiar task more efficiently. Save time, automate, streamline, do more with less.</li>
+</ol>
+
+<h4>Cue words for each type</h4>
+<table>
+  <tr><th>Type</th><th>What to look for</th><th>Cue words</th></tr>
+  <tr>
+    <td><code>CREATIVE</code></td>
+    <td>AI makes something new</td>
+    <td>create, generate, imagine, design, personalize, brainstorm, art, campaign</td>
+  </tr>
+  <tr>
+    <td><code>NORMATIVE</code></td>
+    <td>Values are front and center</td>
+    <td>responsible, ethical, fair, safe, inclusive, sustainable, equitable, trusted, privacy</td>
+  </tr>
+  <tr>
+    <td><code>AGENTIC</code></td>
+    <td>Control, autonomy, or workforce identity</td>
+    <td>you decide, your way, customize, take control, autonomous, adapt, in charge, upskill, complement your team, AI + human, amplify strengths</td>
+  </tr>
+  <tr>
+    <td><code>OPERATIONAL</code></td>
+    <td>Efficiency at a familiar task (default when nothing else stands out)</td>
+    <td>save time, automate, faster, streamline, easier, efficient, at scale, productivity</td>
+  </tr>
+</table>
+
+<hr>
+
+<h3>Reminders</h3>
+<ul>
+  <li>Your answers <strong>auto-save</strong>. You can pause and come back on the same device.</li>
+  <li>Each video <strong>turns green</strong> in the list once you have coded it.</li>
+  <li>The <strong>"Mark session complete"</strong> button appears at the top and bottom of the page once all 100 videos in the session are coded.</li>
+  <li>If a video is <strong>private or has been deleted</strong>, use the "video is private/deleted" button to mark it unviewable and move on.</li>
+  <li>If you are unsure whether the empowered party is a person or a firm, go back to Question 1 — you may not be sure empowerment is present at all.</li>
+</ul>
+
+  </div>
+</div>
+
+<script>
+const STORAGE_NS = "jams_empowerment_v20";
+const N_SESSIONS = 5;
+const COMPLETION_CODE = "JAMS2026R2";
+const N_TRAINING = 10;
+const RESEARCHER_EMAIL = "research@hamelberg-ai.com";
+const EMAIL_SUBJECT_BASE = "JAMS Round 2 Coding";
+const DEADLINE_HOURS = 6;
+
+function loadGlobal() { try { return JSON.parse(localStorage.getItem(STORAGE_NS + "_global")) || {}; } catch(e) { return {}; } }
+function saveGlobal(g) { localStorage.setItem(STORAGE_NS + "_global", JSON.stringify(g)); }
+function loadSession(n) { try { return JSON.parse(localStorage.getItem(STORAGE_NS + "_session" + n)) || {}; } catch(e) { return {}; } }
+function loadTraining() { try { return JSON.parse(localStorage.getItem(STORAGE_NS + "_training")) || {}; } catch(e) { return {}; } }
+
+function openCodebook() { document.getElementById("codebook-overlay").classList.add("show"); }
+function closeCodebook() { document.getElementById("codebook-overlay").classList.remove("show"); }
+
+function trainingComplete() {
+  const t = loadTraining();
+  if (!t.completed || !Array.isArray(t.completed)) return false;
+  return t.completed.length >= N_TRAINING;
+}
+
+function renderHome() {
+  const g = loadGlobal();
+  if (!g.prolific_id) {
+    document.getElementById("onboarding").style.display = "block";
+    document.getElementById("main-panel").style.display = "none";
+    return;
+  }
+  document.getElementById("onboarding").style.display = "none";
+  document.getElementById("main-panel").style.display = "block";
+  document.getElementById("pid-display").textContent = g.prolific_id;
+
+  // Training status
+  const t = loadTraining();
+  const nDone = (t.completed || []).length;
+  const trStatus = document.getElementById("training-status");
+  const trLink = document.getElementById("training-link");
+  if (trainingComplete()) {
+    trStatus.innerHTML = '<span style="color:#047857; font-weight:600;">✓ Training complete</span> — you may re-visit the training page anytime.';
+    trLink.textContent = "Review training";
+    trLink.className = "btn btn-secondary";
+  } else if (nDone > 0) {
+    trStatus.textContent = `Training in progress: ${nDone} / ${N_TRAINING} videos passed.`;
+    trLink.textContent = "Continue training";
+  } else {
+    trStatus.textContent = "Not started.";
+    trLink.textContent = "Start training";
+  }
+
+  // Sessions: locked until training complete
+  const trainingDone = trainingComplete();
+  let allSessionsComplete = trainingDone;
+  for (let n = 1; n <= N_SESSIONS; n++) {
+    const s = loadSession(n);
+    const row = document.getElementById("session-row-" + n);
+    const status = document.getElementById("session-status-" + n);
+    const link = document.getElementById("session-link-" + n);
+    row.classList.remove("locked", "complete");
+    if (!trainingDone) {
+      row.classList.add("locked");
+      status.textContent = "Locked - complete training first";
+      link.style.pointerEvents = "none"; link.style.opacity = "0.5";
+      allSessionsComplete = false;
+    } else if (s.marked_complete) {
+      row.classList.add("complete");
+      status.textContent = "Completed " + new Date(s.marked_complete).toLocaleString();
+      link.style.pointerEvents = ""; link.style.opacity = "";
+      link.textContent = "Review";
+    } else {
+      const answered = Object.keys(s.answers || {}).length;
+      status.textContent = answered > 0 ? `In progress — ${answered} coded` : "Not started";
+      link.style.pointerEvents = ""; link.style.opacity = "";
+      link.textContent = "Open";
+      allSessionsComplete = false;
+    }
+  }
+
+  if (allSessionsComplete && trainingDone) renderSubmitPanel();
+}
+
+function resetPID() {
+  if (confirm("Change Prolific ID? Your progress will remain saved.")) {
+    const g = loadGlobal();
+    delete g.prolific_id;
+    saveGlobal(g);
+    renderHome();
+  }
+}
+
+document.getElementById("save-pid-btn").addEventListener("click", () => {
+  const val = document.getElementById("pid-input").value.trim();
+  if (val.length < 6) { alert("Please enter a valid Prolific ID."); return; }
+  const g = loadGlobal();
+  g.prolific_id = val;
+  saveGlobal(g);
+  renderHome();
+});
+
+// ------------------------------------------------------------------
+// Final submission (mailto pattern; same as v19)
+// ------------------------------------------------------------------
+function buildCombinedCSV() {
+  const g = loadGlobal();
+  const pid = g.prolific_id || "";
+  const rows = [["prolific_id", "session_number", "post_id", "video_id", "empowerment", "empowerment_who", "empowerment_type", "unviewable", "unviewable_reason", "coded_at"]];
+  for (let n = 1; n <= N_SESSIONS; n++) {
+    const s = loadSession(n);
+    const ans = s.answers || {};
+    Object.keys(ans).forEach(pid_ => {
+      const a = ans[pid_];
+      rows.push([pid, n, pid_, a.video_id || "", a.empowerment || "", a.empowerment_who || "", a.empowerment_type || "",
+                 a.unviewable ? "yes" : "no", a.unviewable_reason || "", a.coded_at || ""]);
+    });
+  }
+  return rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("
+");
+}
+
+function downloadCSV() {
+  const csv = buildCombinedCSV();
+  const g = loadGlobal();
+  const safePid = (g.prolific_id || "unknown").replace(/[^a-zA-Z0-9]/g, "");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `round2_${safePid}_${Date.now()}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function renderSubmitPanel() {
+  const g = loadGlobal();
+  const pid = g.prolific_id || "";
+  const safePid = pid.replace(/[^a-zA-Z0-9]/g, "");
+  const filename = `round2_${safePid}_${Date.now()}.csv`;
+  const subject = `${EMAIL_SUBJECT_BASE} — ${pid}`;
+  const body = `Hello,
+
+Please find attached my completed round-2 coding CSV.
+
+Prolific ID: ${pid}
+Completion code: ${COMPLETION_CODE}
+File: ${filename}
+
+NOTE: please attach the CSV file before sending. It is in your Downloads folder.
+
+Thank you.`;
+  const mailtoHref = `mailto:${RESEARCHER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  document.getElementById("email-panel-wrap").innerHTML = `
+    <div class="email-panel">
+      <h3>All sessions complete — submit your responses</h3>
+      <p>Three steps to submit, in order. Please follow them carefully — payment depends on it.</p>
+
+      <div style="background:#F8FAFC; border-left:3px solid #1E2761; padding:14px 18px; border-radius:4px; margin:14px 0;">
+        <h4><span style="display:inline-block; background:#1E2761; color:white; width:22px; height:22px; border-radius:50%; text-align:center; line-height:22px; font-weight:600; margin-right:8px; font-size:12px;">1</span>Download your responses</h4>
+        <p style="font-size:13px; margin:6px 0;">Click below to download <code>${filename}</code> to your Downloads folder.</p>
+        <button class="btn" onclick="downloadCSV()">Download CSV</button>
+      </div>
+
+      <div style="background:#F8FAFC; border-left:3px solid #1E2761; padding:14px 18px; border-radius:4px; margin:14px 0;">
+        <h4><span style="display:inline-block; background:#1E2761; color:white; width:22px; height:22px; border-radius:50%; text-align:center; line-height:22px; font-weight:600; margin-right:8px; font-size:12px;">2</span>Email the CSV to the researcher</h4>
+        <p style="font-size:13px; margin:6px 0;">Click the button below to open your email client with the message pre-filled. <strong>Attach the CSV from step 1 before sending.</strong></p>
+        <a class="btn" href="${mailtoHref}">Open email client</a>
+        <p style="font-size:12px; color:#6B7280; margin:8px 0 0 0;">To: <code>${RESEARCHER_EMAIL}</code></p>
+      </div>
+
+      <div style="background:#F8FAFC; border-left:3px solid #1E2761; padding:14px 18px; border-radius:4px; margin:14px 0;">
+        <h4><span style="display:inline-block; background:#1E2761; color:white; width:22px; height:22px; border-radius:50%; text-align:center; line-height:22px; font-weight:600; margin-right:8px; font-size:12px;">3</span>Enter your completion code on Prolific</h4>
+        <p style="font-size:13px; margin:6px 0;">Copy this code and paste it into the Prolific completion field:</p>
+        <div style="background:white; border:1px solid #E2E8F0; border-radius:6px; padding:12px; text-align:center;">
+          <code style="font-size:18px; font-weight:600; color:#1E2761;">${COMPLETION_CODE}</code>
+          <button class="btn btn-secondary" style="margin-left:12px;" onclick="navigator.clipboard.writeText('${COMPLETION_CODE}').then(() => this.textContent='Copied!')">Copy</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Refresh home view when page loads, and after coming back from a session
+window.addEventListener("DOMContentLoaded", renderHome);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") setTimeout(renderHome, 300); });
+</script>
+
+</body>
+</html>
